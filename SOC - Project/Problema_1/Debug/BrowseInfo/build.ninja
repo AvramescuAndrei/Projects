@@ -1,0 +1,41 @@
+##IAR Ninja build file
+
+
+#Rules
+rule COMPILER_XCL
+  command = D$:\ZipInstall\common\bin\XclFileGenerator.exe $xclcommand -f "$rspfile_name"
+  description = IAR_NEW_TOOL+++COMPILER_XCL+++$in
+  rspfile = $rspfile_name
+  rspfile_content = $flags
+
+rule INDEXER
+  command = D$:\ZipInstall\common\bin\SourceIndexer.exe $flags
+  depfile = $out.dep
+  description = IAR_NEW_TOOL+++INDEXER+++$out
+
+rule MAKEBROWSE
+  command = D$:\ZipInstall\common\bin\makeBrowseData.exe $flags
+  description = IAR_NEW_TOOL+++MAKEBROWSE+++$out
+
+rule PDBLINK
+  command = D$:\ZipInstall\common\bin\PbdLink.exe $flags
+  description = IAR_NEW_TOOL+++PDBLINK+++$out
+
+
+
+#Build steps
+build C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.xcl : COMPILER_XCL 
+  xclcommand = -source_file "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\main.c" -xcl_file "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.xcl" -macro_file "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.tmp" -icc_path D$:\ZipInstall\avr\bin\iccavr.exe
+  flags = "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\main.c" -v3 --enhanced_core -ms -o "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\Obj\\" -y --initializers_in_flash --no_cse --no_inline --no_code_motion --no_cross_call --no_clustering --no_tbaa --debug -e --dlib --dlib_config DLib_Config_Normal.h -Ol --predef_macros "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.tmp"
+  rspfile_name = C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.xcl.rsp
+
+build C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.pbi : INDEXER C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.xcl |  $
+C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\main.c
+  flags = "-out=C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.pbi" -f "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.xcl"
+
+build C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\SW.pbw : MAKEBROWSE C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\SW.pbd
+  flags = "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\SW.pbd" -output "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\SW.pbw"
+
+build C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\SW.pbd : PDBLINK C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.pbi
+  flags = -M "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\SW.pbd" "C$:\Users\my\OneDrive\Desktop\SOC$ -$ Proiect\Problema_1\Debug\BrowseInfo\main.pbi"
+

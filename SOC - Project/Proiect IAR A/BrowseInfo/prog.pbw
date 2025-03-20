@@ -1,0 +1,30 @@
+[
+  {
+    "ID": "c:@F@par",
+    "What": "Function",
+    "defdec": "Def",
+    "display": "unsigned short par(unsigned short)",
+    "location": {
+      "column": "16",
+      "line": "1",
+      "path": "C:\\Users\\my\\OneDrive\\Desktop\\SOC - Proiect\\Proiect IAR A\\func.c"
+    },
+    "name": "par",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@calc",
+    "What": "Function",
+    "defdec": "Def",
+    "display": "unsigned short calc(unsigned short, unsigned short)",
+    "location": {
+      "column": "16",
+      "line": "6",
+      "path": "C:\\Users\\my\\OneDrive\\Desktop\\SOC - Proiect\\Proiect IAR A\\func.c"
+    },
+    "name": "calc",
+    "origin": "project_file",
+    "scope": null
+  }
+]

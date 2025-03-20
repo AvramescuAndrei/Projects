@@ -1,0 +1,34 @@
+        NAME    main
+
+        PUBLIC  main
+        EXTERN  par, calc
+
+SPH     EQU 0x3E          ; Stack Pointer High
+SPL     EQU 0x3D          ; Stack Pointer Low
+RAMEND  EQU 0x045F        ; Capatul memoriei RAM
+
+        ORG $0
+        RJMP    RESET
+
+RESET:  
+        LDI     R16, HIGH(RAMEND) ; Încarcam valoarea HIGH a adresei maxime RAM
+        OUT     SPH, R16          ; Setam registrul Stack Pointer High
+        LDI     R16, LOW(RAMEND)  ; Încarcam valoarea LOW a adresei maxime RAM
+        OUT     SPL, R16          ; Setam registrul Stack Pointer Low
+
+        RJMP    main        
+
+        RSEG    CODE
+main:   
+        LDI     R16, 5
+        CALL    par
+        MOV     R23, R16
+
+        LDI     R16, 6
+        LDI     R18, 3
+        CALL    calc
+        MOV     R22, R16
+
+        RET
+
+        END     main
