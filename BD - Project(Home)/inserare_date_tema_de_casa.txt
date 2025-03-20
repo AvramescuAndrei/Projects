@@ -1,0 +1,536 @@
+-- Resetare auto-incrementuri si stergerea datelor din tabele pentru a evita situatii neplacute si neprevazute :
+/*
+ALTER SEQUENCE id_animale_inc RESTART;
+ALTER SEQUENCE id_autovehicule_inc RESTART;
+ALTER SEQUENCE id_clienti_inc RESTART;
+ALTER SEQUENCE id_comenzi_inc RESTART;
+ALTER SEQUENCE id_seminte_inc RESTART;
+DELETE FROM animale;
+DELETE FROM autovehicule;
+DELETE FROM clienti;
+DELETE FROM comenzi;
+DELETE FROM detalii_clienti;
+DELETE FROM seminte;
+*/
+
+-- Script inserare date in tabelele "Clienti" si "Detalii_clienti" folosind autoincrementul si verificand ca varsta sa fie de minim 18 ani.
+-- " Totodată, pentru cazurile în care clientul nu are minim 18 ani, comenzile vor fi respinse (“use-case”). "
+-- INCEPUT CLIENT 1
+DECLARE
+    copie_varsta NUMBER;
+BEGIN
+    SAVEPOINT StartClient1;
+    
+    INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Mocanu', 'Petre', 'Cluj', 'Principala', '0712345678');
+    INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (32, '400100', id_clienti_inc.currval);
+
+    SELECT varsta
+    INTO copie_varsta
+    FROM detalii_clienti
+    WHERE id_clienti = (SELECT id_clienti
+                        FROM clienti
+                        WHERE numar_de_telefon = '0712345678');
+    
+    IF copie_varsta >= 18 THEN 
+        
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului s-a produs cu succes.');
+    ELSE
+        ROLLBACK TO StartClient1;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului a esuat.');
+    END IF;
+END;
+-- SFARSIT CLIENT 1
+
+-- INCEPUT CLIENT 2
+DECLARE
+    copie_varsta NUMBER;
+BEGIN
+    SAVEPOINT StartClient2;
+    
+    INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Ionescu', 'Maria', 'Bucuresti', 'Unirii', '0723456789');
+    INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (18, '615002', id_clienti_inc.currval);
+
+    SELECT varsta
+    INTO copie_varsta
+    FROM detalii_clienti
+    WHERE id_clienti = (SELECT id_clienti
+                        FROM clienti
+                        WHERE numar_de_telefon = '0723456789');
+    
+    IF copie_varsta >= 18 THEN 
+        
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului s-a produs cu succes.');
+    ELSE
+        ROLLBACK TO StartClient2;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului a esuat.');
+    END IF;
+END;
+-- SFARSIT CLIENT 2
+
+-- INCEPUT CLIENT 3
+DECLARE
+    copie_varsta NUMBER;
+BEGIN
+    SAVEPOINT StartClient3;
+    
+    INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Popa', 'Mihai', 'Iasi', 'Chimiei', '0740123499');
+    INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (27, '112233', id_clienti_inc.currval);
+
+    SELECT varsta
+    INTO copie_varsta
+    FROM detalii_clienti
+    WHERE id_clienti = (SELECT id_clienti
+                        FROM clienti
+                        WHERE numar_de_telefon = '0740123499');
+    
+    IF copie_varsta >= 18 THEN 
+        
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului s-a produs cu succes.');
+    ELSE
+        ROLLBACK TO StartClient3;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului a esuat.');
+    END IF;
+END;
+-- SFARSIT CLIENT 3
+
+-- INCEPUT CLIENT 4
+DECLARE
+    copie_varsta NUMBER;
+BEGIN
+    SAVEPOINT StartClient4;
+    
+    INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Mihnea', 'Vasile', 'Galati', 'Pietonala', '0726345587');
+    INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (70, '550021', id_clienti_inc.currval);
+
+    SELECT varsta
+    INTO copie_varsta
+    FROM detalii_clienti
+    WHERE id_clienti = (SELECT id_clienti
+                        FROM clienti
+                        WHERE numar_de_telefon = '0726345587');
+    
+    IF copie_varsta >= 18 THEN 
+        
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului s-a produs cu succes.');
+    ELSE
+        ROLLBACK TO StartClient4;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului a esuat.');
+    END IF;
+END;
+-- SFARSIT CLIENT 4
+
+-- INCEPUT CLIENT 5
+DECLARE
+    copie_varsta NUMBER;
+BEGIN
+    SAVEPOINT StartClient5;
+    
+    INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Panait', 'Mihai', 'Timisoara', 'Ghencea', '0798446711');
+    INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (38, '981235', id_clienti_inc.currval);
+
+    SELECT varsta
+    INTO copie_varsta
+    FROM detalii_clienti
+    WHERE id_clienti = (SELECT id_clienti
+                        FROM clienti
+                        WHERE numar_de_telefon = '0798446711');
+    
+    IF copie_varsta >= 18 THEN 
+        
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului s-a produs cu succes.');
+    ELSE
+        ROLLBACK TO StartClient5;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului a esuat.');
+    END IF;
+END;
+-- SFARSIT CLIENT 5
+
+-- INCEPUT CLIENT 6 ( NU ARE 18 ANI ! )
+DECLARE
+    copie_varsta NUMBER;
+BEGIN
+    SAVEPOINT StartClient6;
+    
+    INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Mirunica', 'Madalin', 'Maramures', 'Ghetii', '0744112233');
+    INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (12, '645980', id_clienti_inc.currval);
+
+    SELECT varsta
+    INTO copie_varsta
+    FROM detalii_clienti
+    WHERE id_clienti = (SELECT id_clienti
+                        FROM clienti
+                        WHERE numar_de_telefon = '0744112233');
+    
+    IF copie_varsta >= 18 THEN 
+        
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului s-a produs cu succes.');
+    ELSE
+        ROLLBACK TO StartClient6;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului a esuat.');
+    END IF;
+END;
+-- SFARSIT CLIENT 6
+
+-- INCEPUT CLIENT 7 ( NU ARE 18 ANI ! )
+DECLARE
+    copie_varsta NUMBER;
+BEGIN
+    SAVEPOINT StartClient6;
+    
+    INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Lira', 'Ionut', 'Pitesti', 'Piteasca', '0791751066');
+    INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (16, '837631', id_clienti_inc.currval);
+
+    SELECT varsta
+    INTO copie_varsta
+    FROM detalii_clienti
+    WHERE id_clienti = (SELECT id_clienti
+                        FROM clienti
+                        WHERE numar_de_telefon = '0791751066');
+    
+    IF copie_varsta >= 18 THEN 
+        
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului s-a produs cu succes.');
+    ELSE
+        ROLLBACK TO StartClient6;
+        DBMS_OUTPUT.PUT_LINE('Inregistrarea clientului a esuat.');
+    END IF;
+END;
+-- SFARSIT CLIENT 7
+
+
+-- Vom genera o comanda cu ID_Client luat aleatoriu, fiind neimportant, in care vom tine evidenta stocului de la ferma.
+INSERT INTO comenzi(metoda_plata, id_clienti, nr_autovehicule, nr_seminte, nr_animale, id_autovehicule, id_seminte, id_animale) 
+    VALUES('CASH', (SELECT id_clienti FROM clienti WHERE numar_de_telefon = '0712345678'), 100, 200, 200, NULL, NULL, NULL);
+
+-- Scrpit inserare date in tabelele "Autovehicule", "Seminte", "Animale" si "Comenzi" pentru verificarea efectuarii unei comenzi folosind tranzactiile.
+-- " Astfel, în cazul în care o comanda va avea un număr de obiecte care depășește stocul fermei, aceasta nu va fi acceptată (“use-case”). "
+-- INCEPUT COMANDA 1
+DECLARE
+    autovehicule_StocTotal NUMBER;
+    seminte_StocTotal NUMBER;
+BEGIN
+    --Incepem Tranzactia
+    SAVEPOINT StartTranzactie1;
+            
+    UPDATE comenzi
+    SET nr_autovehicule = nr_autovehicule - 1
+    WHERE ID_Comenzi = 7000;
+            
+    UPDATE comenzi
+    SET nr_seminte = nr_seminte - 50
+    WHERE ID_Comenzi = 7000;
+            
+    SELECT nr_autovehicule
+    INTO autovehicule_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    SELECT nr_seminte
+    INTO seminte_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    IF autovehicule_StocTotal > 0 AND seminte_StocTotal > 0 THEN
+
+            INSERT INTO autovehicule (tip_auto, livrare_auto, asigurare, culoare_int, culoare_ext, navigatie, pret_autovehicul) VALUES ('tractor', 'L', 'NU', NULL, NULL, 'EN', 35000);
+            INSERT INTO seminte (tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('rosii', 'L', '50', 'V', 'lutoase', 5000);
+            INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0723456789'), id_autovehicule_inc.currval, id_seminte_inc.currval, NULL);
+                    
+            COMMIT;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost procesata cu succes.');
+    ELSE
+            ROLLBACK TO StartTranzactie1;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost anulata. Stoc insuficient.');
+    END IF;
+END;
+-- SFARSIT COMANDA 1
+
+-- INCEPUT COMANDA 2
+DECLARE
+    autovehicule_StocTotal NUMBER;
+    animale_StocTotal NUMBER;
+BEGIN
+    --Incepem Tranzactia
+    SAVEPOINT StartTranzactie2;
+            
+    UPDATE comenzi
+    SET nr_autovehicule = nr_autovehicule - 1
+    WHERE ID_Comenzi = 7000;
+            
+    UPDATE comenzi
+    SET nr_animale = nr_animale - 50
+    WHERE ID_Comenzi = 7000;
+            
+    SELECT nr_autovehicule
+    INTO autovehicule_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    SELECT nr_animale
+    INTO animale_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    IF autovehicule_StocTotal >= 1 AND animale_StocTotal > 0 THEN
+
+            INSERT INTO autovehicule (tip_auto, livrare_auto, asigurare, culoare_int, culoare_ext, navigatie, pret_autovehicul) VALUES ('tractor', 'R', 'DA', 'rosu', 'verde', 'RO', 50000);
+            INSERT INTO animale (tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('porci', 'R', 50, 1, 2000);
+            INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CASH', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0723456789'), id_autovehicule_inc.currval, NULL, id_animale_inc.currval);   
+            COMMIT;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost procesata cu succes.');
+    ELSE
+            ROLLBACK TO StartTranzactie2;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost anulata. Stoc insuficient.');
+    END IF;
+END;    
+-- SFARSIT COMANDA 2
+
+-- INCEPUT COMANDA 3
+DECLARE
+    autovehicule_StocTotal NUMBER;
+    animale_StocTotal NUMBER;
+    seminte_StocTotal NUMBER;
+BEGIN
+    --Incepem Tranzactia
+    SAVEPOINT StartTranzactie3;
+    
+    UPDATE comenzi
+    SET nr_autovehicule = nr_autovehicule - 1
+    WHERE ID_Comenzi = 7000;
+            
+    UPDATE comenzi
+    SET nr_seminte = nr_seminte - 60
+    WHERE ID_Comenzi = 7000;
+            
+    UPDATE comenzi
+    SET nr_animale = nr_animale - 38
+    WHERE ID_Comenzi = 7000;
+    
+    SELECT nr_autovehicule
+    INTO autovehicule_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    SELECT nr_animale
+    INTO animale_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    SELECT nr_seminte
+    INTO seminte_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    IF autovehicule_StocTotal >= 1 AND animale_StocTotal > 0 AND seminte_StocTotal > 0 THEN
+
+            INSERT INTO autovehicule (tip_auto, livrare_auto, asigurare, culoare_int, culoare_ext, navigatie, pret_autovehicul) VALUES ('combina', 'L', 'NU', 'verde', NULL, 'EN', 65000);
+            INSERT INTO seminte (tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('morcovi', 'R', 60, 'V', 'argiloase', 4000);
+            INSERT INTO animale (tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('gaini', 'R', 38, 1, 3000);
+            INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0723456789'), id_autovehicule_inc.currval, id_seminte_inc.currval, id_animale_inc.currval);
+                    
+            COMMIT;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost procesata cu succes.');
+    ELSE
+            ROLLBACK TO StartTranzactie3;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost anulata. Stoc insuficient.');
+    END IF;
+END;
+--  SFARSIT COMANDA 3
+
+-- INCEPUT COMANDA 4
+DECLARE
+    animale_StocTotal NUMBER;
+BEGIN
+    --Incepem Tranzactia
+    SAVEPOINT StartTranzactie4;
+
+    UPDATE comenzi
+    SET nr_animale = nr_animale - 20
+    WHERE ID_Comenzi = 7000;
+            
+    SELECT nr_animale
+    INTO animale_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    IF animale_StocTotal > 0 THEN
+
+            INSERT INTO animale (tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('vaci', 'L', 20, 0, 2500);       
+            INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0740123499'), NULL, NULL, id_animale_inc.currval);
+                    
+            COMMIT;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost procesata cu succes.');
+    ELSE
+            ROLLBACK TO StartTranzactie4;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost anulata. Stoc insuficient.');
+    END IF;
+END;
+-- SFARSIT COMANDA 4
+
+-- INCEPUT COMANDA 5
+DECLARE
+    animale_StocTotal NUMBER;
+    seminte_StocTotal NUMBER;
+BEGIN
+    --Incepem Tranzactia
+    SAVEPOINT StartTranzactie5;
+    
+    UPDATE comenzi
+    SET nr_seminte = nr_seminte - 80
+    WHERE ID_Comenzi = 7000;
+            
+    UPDATE comenzi
+    SET nr_animale = nr_animale - 80
+    WHERE ID_Comenzi = 7000;
+    
+    SELECT nr_animale
+    INTO animale_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    SELECT nr_seminte
+    INTO seminte_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    IF animale_StocTotal > 0 AND seminte_StocTotal > 0 THEN
+            
+            INSERT INTO animale (tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('oi', 'R', 80, 1, 9000);
+            INSERT INTO seminte (tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('castraveti', 'R', 80, 'P', 'vulcanice', 8000);
+            INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0726345587'), NULL, id_seminte_inc.currval, id_animale_inc.currval);
+                    
+            COMMIT;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost procesata cu succes.');
+    ELSE
+            ROLLBACK TO StartTranzactie5;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost anulata. Stoc insuficient.');
+    END IF;
+END;
+-- SFARSIT COMANDA 5
+
+-- INCEPUT COMANDA 6
+DECLARE
+    autovehicule_StocTotal NUMBER;
+BEGIN
+     --Incepem Tranzactia
+    SAVEPOINT StartTranzactie6;
+    
+    UPDATE comenzi
+    SET nr_autovehicule = nr_autovehicule - 1
+    WHERE ID_Comenzi = 7000;
+            
+    SELECT nr_autovehicule
+    INTO autovehicule_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+
+    IF autovehicule_StocTotal >= 1 THEN
+                     
+            INSERT INTO autovehicule (tip_auto, livrare_auto, asigurare, culoare_int, culoare_ext, navigatie, pret_autovehicul) VALUES ('tractor', 'L', 'DA', 'verde', 'albastru', 'EN', 85000); 
+            INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0798446711'), id_autovehicule_inc.currval, NULL, NULL);
+                    
+            COMMIT;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost procesata cu succes.');
+    ELSE
+            ROLLBACK TO StartTranzactie6;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost anulata. Stoc insuficient.');
+    END IF;
+END;
+-- SFARSIT COMANDA 6
+
+-- INCEPUT COMANDA 7 ( NU TREBUIE SA SE INREGISTREZE ACEASTA COMANDA DIN CAUZA NUMARERELOR MICI DE ANIMALE SI SEMINTE RAMASE IN STOC )
+DECLARE
+    animale_StocTotal NUMBER;
+    seminte_StocTotal NUMBER;
+BEGIN
+    --Incepem Tranzactia
+    SAVEPOINT StartTranzactie7;
+    
+    UPDATE comenzi
+    SET nr_seminte = nr_seminte - 36
+    WHERE ID_Comenzi = 7000;
+            
+    UPDATE comenzi
+    SET nr_animale = nr_animale - 36
+    WHERE ID_Comenzi = 7000;
+            
+    SELECT nr_animale
+    INTO animale_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    SELECT nr_seminte
+    INTO seminte_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    IF animale_StocTotal > 0 AND seminte_StocTotal > 0 THEN
+     
+            INSERT INTO animale (tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('oi', 'R', 36, 1, 9000);
+            INSERT INTO seminte (tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('castraveti', 'R', 36, 'P', 'vulcanice', 8000);
+            INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0726345587'), NULL, id_seminte_inc.currval, id_animale_inc.currval);
+                    
+            COMMIT;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost procesata cu succes.');
+    ELSE
+            ROLLBACK TO StartTranzactie7;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost anulata. Stoc insuficient.');
+    END IF;
+END;
+-- SFARSIT COMANDA 7
+
+-- INCEPUT COMANDA 8 ( NU TREBUIE SA SE INREGISTREZE ACEASTA COMANDA DIN CAUZA NUMARERELOR MICI DE ANIMALE SI SEMINTE RAMASE IN STOC )
+DECLARE
+    animale_StocTotal NUMBER;
+    seminte_StocTotal NUMBER;
+BEGIN
+    --Incepem Tranzactia
+    SAVEPOINT StartTranzactie8;
+    
+    UPDATE comenzi
+    SET nr_seminte = nr_seminte - 36
+    WHERE ID_Comenzi = 7000;
+            
+    UPDATE comenzi
+    SET nr_animale = nr_animale - 36
+    WHERE ID_Comenzi = 7000;
+            
+    SELECT nr_animale
+    INTO animale_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    SELECT nr_seminte
+    INTO seminte_StocTotal
+    FROM comenzi
+    WHERE ID_Comenzi = 7000;
+    
+    IF animale_StocTotal > 0 AND seminte_StocTotal > 0 THEN
+    
+            INSERT INTO animale (tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('oi', 'R', 71, 1, 9000);
+            INSERT INTO seminte (tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('castraveti', 'R', 71, 'P', 'vulcanice', 8000);
+            INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0740123499'), NULL, id_seminte_inc.currval, id_animale_inc.currval);
+                    
+            COMMIT;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost procesata cu succes.');
+    ELSE
+            ROLLBACK TO StartTranzactie8;
+            DBMS_OUTPUT.PUT_LINE('Comanda a fost anulata. Stoc insuficient.');
+    END IF;
+END;
+-- SFARSIT COMANDA 8
