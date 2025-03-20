@@ -1,0 +1,57 @@
+-- Resetare SEQUENCE-uri + stergerea datelor din tabele pentru a evita evenimente neplacute si neasteptate.
+
+/*
+ALTER SEQUENCE clienti_id_clienti_seq RESTART;
+ALTER SEQUENCE comenzi_id_comenzi_seq RESTART;
+*/
+
+/*
+DELETE FROM animale;
+DELETE FROM autovehicule;
+DELETE FROM clienti;
+DELETE FROM comenzi;
+DELETE FROM detalii_clienti;
+DELETE FROM seminte;
+*/
+
+-- Script inserare date in tabelele "Clienti" si "Detalii_clienti" folosind autoincrementul.
+/*
+INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Mocanu', 'Petre', 'Cluj', 'Principala', '0712345678');
+INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (32, '400100', clienti_id_clienti_seq.currval);
+
+
+INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Ionescu', 'Maria', 'Bucuresti', 'Unirii', '0723456789');
+INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (18, '615002', clienti_id_clienti_seq.currval);
+
+INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Popa', 'Mihai', 'Iasi', 'Chimiei', '0740123499');
+INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (27, '112233', clienti_id_clienti_seq.currval);
+
+INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Mihnea', 'Vasile', 'Galati', 'Pietonala', '0726345587');
+INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (70, '550021', clienti_id_clienti_seq.currval);
+
+INSERT INTO clienti (nume, prenume, oras, strada, numar_de_telefon) VALUES ('Panait', 'Mihai', 'Timisoara', 'Ghencea', '0798446711');
+INSERT INTO detalii_clienti (varsta, cod_postal, id_clienti) VALUES (38, '981235', clienti_id_clienti_seq.currval);
+*/
+
+-- Scrpit inserare date in tabelele "Autovehicule", "Seminte", "Animale" si "Comenzi" pentru verificarea efectuarii unei comenzi.
+/*
+INSERT INTO autovehicule (tip_auto, livrare_auto, asigurare, culoare_int, culoare_ext, navigatie, pret_autovehicul) VALUES ('tractor', 'R', 'DA', 'rosu', 'verde', 'RO', 50000);
+INSERT INTO animale (tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('porci', 'R', 50, 1, 2000);
+INSERT INTO comenzi (metoda_plata, tip_auto, tip_seminte, tip_animale, id_clienti) VALUES ('CASH', 'tractor', NULL, 'porci', (SELECT id_clienti FROM clienti WHERE numar_de_telefon = '0712345678'));
+*/
+
+--INSERT INTO autovehicule (tip_auto, livrare_auto, asigurare, culoare_int, culoare_ext, navigatie, pret_autovehicul) VALUES ('buldozer', 'L', 'DA', 'albastru', 'albastru', 'EN', 75000);
+--INSERT INTO seminte (tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('rosii', 'L', '50', 'V', 'lutoase', 5000);
+--INSERT INTO animale (tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('gaini', 'L', 25, 0, 1000);
+--INSERT INTO comenzi (metoda_plata, tip_auto, tip_seminte, tip_animale, id_clienti) VALUES ('CARD', 'buldozer', 'rosii', 'porci', (SELECT id_clienti FROM clienti WHERE numar_de_telefon = '0723456789'));
+
+
+
+
+
+
+
+
+
+
+

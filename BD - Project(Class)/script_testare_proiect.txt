@@ -1,0 +1,231 @@
+-- DIN CERINTA : "De asemenea, ferma va putea vizualiza listele în care se află informații despre clienți si comenzile lor simultan.", excluzând cheile primare/străine
+SELECT 
+    c.nume || ' ' || c.prenume AS nume_complet,
+    c.oras,
+    c.strada,
+    cm.metoda_plata,
+    a.tip_animale AS animale_comandate,
+    au.tip_auto AS vehicul_utilizat,
+    s.tip_seminte AS seminte_comandate
+FROM clienti c
+JOIN comenzi cm ON c.id_clienti = cm.id_clienti
+LEFT JOIN animale a ON cm.id_animale = a.id_animale
+LEFT JOIN autovehicule au ON cm.id_autovehicule = au.id_autovehicule
+LEFT JOIN seminte s ON cm.id_seminte = s.id_seminte;
+
+-- DIN CERINTA : ", dar și cele în care se află clienții împreună cu datele personale adiționale din celelalte tabele" fără afișarea ID-urilor si
+-- utilizarea cheii primare fără a o afișa în rezultat.
+SELECT 
+    c.nume || ' ' || c.prenume AS nume_complet,
+    c.oras,
+    c.strada,
+    dc.varsta,
+    dc.cod_postal
+FROM clienti c
+JOIN detalii_clienti dc ON c.id_clienti = dc.id_clienti;
+
+-- ~~~~~~~~~~ VERIFICAREA TUTUROR CONSTRANGERILOR DE TIP CHECK : ~~~~~~~~~~
+-- varsta
+UPDATE detalii_clienti
+SET varsta = 15
+WHERE cod_postal = '400100';
+-- ORA-02290: check constraint (BD159.DETALII_CLIENTI_VARSTA_CK) violated
+
+-- metoda_plata
+UPDATE comenzi
+SET metoda_plata = 'MANA'
+WHERE id_comenzi = 7000;
+-- ORA-02290: check constraint (BD159.COMENZI_METODA_PLATA_CK) violated
+
+-- tip_auto
+UPDATE autovehicule
+SET tip_auto = 'macara'
+WHERE livrare_auto = 'R';
+-- ORA-02290: check constraint (BD159.AUTOVEHICULE_TIP_AUTO_CK) violated
+
+-- livrare_auto
+UPDATE autovehicule
+SET livrare_auto = 'A'
+WHERE tip_auto = 'tractor';
+-- ORA-02290: check constraint (BD159.AUTOVEHICULE_LIVRARE_AUTO_CK) violated
+
+-- asigurare
+UPDATE autovehicule
+SET asigurare = 'NO'
+WHERE tip_auto = 'tractor';
+-- ORA-02290: check constraint (BD159.AUTOVEHICULE_ASIGURARE_CK) violated
+
+-- culoare_int
+UPDATE autovehicule
+SET culoare_int = 'galben'
+WHERE tip_auto = 'tractor';
+-- ORA-02290: check constraint (BD159.AUTOVEHICULE_CULOARE_INT_CK) violated
+
+-- culoare_ext
+UPDATE autovehicule
+SET culoare_ext = 'galben'
+WHERE tip_auto = 'tractor';
+-- ORA-02290: check constraint (BD159.AUTOVEHICULE_CULOARE_EXT_CK) violated
+
+-- navigatie
+UPDATE autovehicule
+SET navigatie = 'FR'
+WHERE tip_auto = 'tractor';
+-- ORA-02290: check constraint (BD159.AUTOVEHICULE_NAVIGATIE_CK) violated
+
+-- tip_seminte
+UPDATE seminte
+SET tip_seminte = 'cacao'
+WHERE livrare_seminte = 'R';
+-- ORA-02290: check constraint (BD159.SEMINTE_TIP_SEMINTE_CK) violated
+
+-- livrare_seminte
+UPDATE seminte
+SET livrare_seminte = 'S'
+WHERE tip_seminte = 'rosii';
+-- ORA-02290: check constraint (BD159.SEMINTE_LIVRARE_SEMINTE_CK) violated
+
+-- anotimp
+UPDATE seminte
+SET anotimp = 'K'
+WHERE tip_seminte = 'rosii';
+-- ORA-02290: check constraint (BD159.SEMINTE_ANOTIMP_CK) violated
+
+-- sol
+UPDATE seminte
+SET sol = 'pamant'
+WHERE tip_seminte = 'rosii';
+-- ORA-02290: check constraint (BD159.SEMINTE_SOL_CK) violated
+
+-- tip_animale
+UPDATE animale
+SET tip_animale = 'arici'
+WHERE livrare_animale = 'R';
+-- ORA-02290: check constraint (BD159.ANIMALE_TIP_ANIMALE_CK) violated
+
+-- livrare_animale
+UPDATE animale
+SET livrare_animale = 'P'
+WHERE tip_animale = 'gaini';
+-- ORA-02290: check constraint (BD159.ANIMALE_LIVRARE_ANIMALE_CK) violated
+
+-- pui
+UPDATE animale
+SET pui = '2'
+WHERE tip_animale = 'gaini';
+-- ORA-02290: check constraint (BD159.ANIMALE_PUI_CK) violated
+
+-- ~~~~~~~~~~ VERIFICAREA TUTUROR CONSTRANGERILOR DE TIP NOT NULL : ~~~~~~~~~~
+-- varsta
+INSERT INTO detalii_clienti(varsta, cod_postal, id_clienti) VALUES(NULL, '123456', id_clienti_inc.currval);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."DETALII_CLIENTI"."VARSTA")
+
+-- nume, prenume, oras, strada, numar_de_telefon
+INSERT INTO clienti(nume, prenume, oras, strada, numar_de_telefon) VALUES (NULL, 'Popa', 'Braila', 'Garii', '0726111123');
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."CLIENTI"."NUME")
+INSERT INTO clienti(nume, prenume, oras, strada, numar_de_telefon) VALUES ('Popa', NULL, 'Braila', 'Garii', '0726111124');
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."CLIENTI"."PRENUME")
+INSERT INTO clienti(nume, prenume, oras, strada, numar_de_telefon) VALUES ('Popa', 'Adrian', NULL, 'Garii', '0726111125');
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."CLIENTI"."ORAS")
+INSERT INTO clienti(nume, prenume, oras, strada, numar_de_telefon) VALUES ('Ceaun', 'Popa', 'Braila', NULL, '0726111126');
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."CLIENTI"."STRADA")
+INSERT INTO clienti(nume, prenume, oras, strada, numar_de_telefon) VALUES ('Ceaun', 'Popa', 'Braila', 'Garii', NULL);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."CLIENTI"."NUMAR_DE_TELEFON")
+
+-- metoda_plata
+INSERT INTO comenzi(metoda_plata) VALUES (NULL);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."COMENZI"."METODA_PLATA")
+
+-- tip_auto, livrare_auto, asigurare, pret_autovehicul
+INSERT INTO autovehicule(tip_auto, livrare_auto, asigurare, pret_autovehicul) VALUES (NULL, 'L', 'DA', 150000);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."AUTOVEHICULE"."TIP_AUTO")
+INSERT INTO autovehicule(tip_auto, livrare_auto, asigurare, pret_autovehicul) VALUES ('tractor', NULL, 'DA', 150000);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."AUTOVEHICULE"."LIVRARE_AUTO")
+INSERT INTO autovehicule(tip_auto, livrare_auto, asigurare, pret_autovehicul) VALUES ('tractor', 'L', NULL, 150000);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."AUTOVEHICULE"."ASIGURARE")
+INSERT INTO autovehicule(tip_auto, livrare_auto, asigurare, pret_autovehicul) VALUES ('tractor', 'L', 'DA', NULL);
+--SQL Error: ORA-01400: cannot insert NULL into ("BD159"."AUTOVEHICULE"."PRET_AUTOVEHICUL")
+
+-- tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte
+INSERT INTO seminte(tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES (NULL, 'R', 50, 'V', 'argiloase', 5000);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."SEMINTE"."TIP_SEMINTE")
+INSERT INTO seminte(tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('rosii', NULL, 50, 'V', 'argiloase', 5000);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."SEMINTE"."LIVRARE_SEMINTE")
+INSERT INTO seminte(tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('rosii', 'R', NULL, 'V', 'argiloase', 5000);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."SEMINTE"."CANTITATEA")
+INSERT INTO seminte(tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('rosii', 'R', 50, NULL, 'argiloase', 5000);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."SEMINTE"."ANOTIMP")
+INSERT INTO seminte(tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('rosii', 'R', 50, 'V', NULL, 5000);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."SEMINTE"."SOL")
+INSERT INTO seminte(tip_seminte, livrare_seminte, cantitatea, anotimp, sol, pret_seminte) VALUES ('rosii', 'R', 50, 'V', 'argiloase', NULL);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."SEMINTE"."PRET_SEMINTE")
+
+-- tip_animale, livrare_animale, numar_animale, pui, pret_animale
+INSERT INTO animale(tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES (NULL, 'R', 50, 1, 2500);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."ANIMALE"."TIP_ANIMALE")
+INSERT INTO animale(tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('oi', NULL, 50, 1, 2500);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."ANIMALE"."LIVRARE_ANIMALE")
+INSERT INTO animale(tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('oi', 'R', NULL, 1, 2500);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."ANIMALE"."NUMAR_ANIMALE")
+INSERT INTO animale(tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('oi', 'R', 50, NULL, 2500);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."ANIMALE"."PUI")
+INSERT INTO animale(tip_animale, livrare_animale, numar_animale, pui, pret_animale) VALUES ('oi', 'R', 50, 1, NULL);
+-- SQL Error: ORA-01400: cannot insert NULL into ("BD159"."ANIMALE"."PRET_ANIMALE")
+
+-- ~~~~~~~~~~ VERIFICAREA TUTUROR CONSTRANGERILOR DE TIP UNIQUE : ~~~~~~~~~~
+-- numar_de_telefon
+INSERT INTO clienti(nume, prenume, oras, strada, numar_de_telefon) VALUES ('Avram', 'Mircea', 'Satu Mare', 'Mare', '0798127634');
+INSERT INTO clienti(nume, prenume, oras, strada, numar_de_telefon) VALUES ('Liberou', 'Tudor', 'Constanta', 'Apei', '0798127634');
+-- ORA-00001: unique constraint (BD159.CLIENTI_NUMAR_DE_TELEFON_UN) violated
+
+-- ~~~~~~~~~~ VERIFICAREA TUTUROR CONSTRANGERILOR DE TIP PRIMARY KEY : ~~~~~~~~~~
+-- id_clienti
+UPDATE clienti
+SET id_clienti = (SELECT id_clienti FROM clienti WHERE nume = 'Mihnea' AND prenume = 'Vasile')
+WHERE nume = 'Panait' AND prenume = 'Mihai';
+-- ORA-00001: unique constraint (BD159.CLIENTI_PK) violated
+
+-- id_comenzi
+UPDATE comenzi
+SET id_comenzi = (SELECT id_comenzi FROM comenzi WHERE id_clienti = 113)
+WHERE metoda_plata = 'CASH';
+-- ORA-00001: unique constraint (BD159.COMENZI_PK) violated
+
+-- id_autovehicule
+UPDATE autovehicule
+SET id_autovehicule = (SELECT id_autovehicule FROM autovehicule WHERE pret_autovehicul = 85000)
+WHERE pret_autovehicul = 50000;
+-- ORA-00001: unique constraint (BD159.AUTOVEHICULE_PK) violated
+
+-- id_seminte
+UPDATE seminte
+SET id_seminte = (SELECT id_seminte FROM seminte WHERE pret_seminte = 5000)
+WHERE pret_seminte = 4000;
+-- ORA-00001: unique constraint (BD159.SEMINTE_PK) violated
+
+-- id_animale
+UPDATE animale
+SET id_animale = (SELECT id_animale FROM animale WHERE pret_animale = 2000)
+WHERE pret_animale = 3000;
+-- ORA-00001: unique constraint (BD159.ANIMALE_PK) violated
+
+-- ~~~~~~~~~~ VERIFICAREA TUTUROR CONSTRANGERILOR DE TIP FOREIGN KEY : ~~~~~~~~~~
+-- id_clienti din COMENZI
+DELETE FROM clienti
+WHERE id_clienti = 113;
+-- ORA-02292: integrity constraint (BD159.COMENZI_CLIENTI_FK) violated - child record found
+
+-- id_autovehicule din COMENZI
+INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0798446711'), id_autovehicule_inc.currval, NULL, NULL);
+-- ORA-02291: integrity constraint (BD159.COMENZI_AUTOVEHICULE_FK) violated - parent key not found
+
+-- id_seminte din COMENZI
+INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0798446711'), NULL, id_seminte_inc.currval, NULL);
+-- ORA-02291: integrity constraint (BD159.COMENZI_SEMINTE_FK) violated - parent key not found
+
+-- id_animale din COMENZI
+INSERT INTO comenzi (metoda_plata, id_clienti, id_autovehicule, id_seminte, id_animale) VALUES ('CARD', (SELECT id_clienti FROM clienti WHERE 
+                    numar_de_telefon = '0798446711'), NULL, NULL, id_animale_inc.currval);
+-- ORA-02291: integrity constraint (BD159.COMENZI_ANIMALE_FK) violated - parent key not found
