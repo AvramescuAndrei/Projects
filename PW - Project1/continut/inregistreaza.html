@@ -1,0 +1,82 @@
+       <div class="inregistreaza">
+            <div class="container">
+                <div class="title">Înregistrează-te acum</div>
+                <form action="#" onsubmit="sub_form(event);">
+                    <div class="user-details">        
+                        <div class="input-box">
+                            <span class="details">Sex :</span>
+                            <select id="sex" required>
+                                <option value=""></option>
+                                <option value="">Masculin</option>
+                                <option value="">Feminin</option>
+                                <option value="">Altul</option>
+                            </select>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Mâncare preferată :</span>
+                            <input list="mancaruri" id="favorite-food" name="mancare" id="mancare" required>
+                            <datalist id="mancaruri">
+                                <option value="Pizza">
+                                <option value="Pasta">
+                                <option value="Lasagna">
+                                <option value="Hamburger">
+                                <option value="Sarmale">
+                            </datalist>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Data nașterii :</span>
+                            <input type="date" id="birthdate" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Ora nașterii :</span>
+                            <input type="time" id="birthtime" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Culoare preferată :</span>
+                            <input type="color" id="fav-color" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Pagină personală :</span>
+                            <input type="url" id="personal-url" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Vârsta (1 - 120):</span>
+                            <input type="range" id="age" min="1" max="120" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Descriere :</span>
+                            <textarea></textarea>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Email :</span>
+                            <input type="email" id="email" placeholder="Introduceti email-ul" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Număr de telefon :</span>
+                            <input type="tel" id="phone" placeholder="Introduceți numărul de telefon" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Nume :</span>
+                            <input type="text" id="lastname" placeholder="Introduceți numele" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Prenumele :</span>
+                            <input type="text" id="firstname" placeholder="Introduceți prenumele" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Nume utilizator :</span>
+                            <input type="text" id="username" placeholder="Introduceți nume utizator" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Parola :</span>
+                            <input type="password" id="password" placeholder="Introduceți parola" required>
+                        </div>
+                    </div>
+        
+                    <div class="button">
+                        <button type="submit">Înregistrează</button>
+                    </div>
+                </form>
+                <script src="js/inregistreaza.js"></script>
+            </div>
+        </div>

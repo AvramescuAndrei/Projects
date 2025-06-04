@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE persoane SYSTEM "persoane.dtd">
+<persoane>
+    <persoana id="1">
+        <Nume>Popescu</Nume>
+        <Prenume>Ion</Prenume>
+        <Varsta>23</Varsta>
+        <Adresa>
+            <strada>Chimiei</strada>
+            <numar>2</numar>
+            <localitate>Iasi</localitate>
+            <judet>Iasi</judet>
+            <tara>Romania</tara>
+        </Adresa>
+        <Nr_telefon>071111</Nr_telefon>
+        <Email>popescu.ion@yahoo.com</Email>
+        <Liceu>Iorga</Liceu>
+    </persoana>
+    <persoana id="2">
+        <Nume>Vasilica</Nume>
+        <prenume>Rares</prenume>
+        <varsta>21</varsta>
+        <adresa>
+            <strada>CaleaGalati</strada>
+            <numar>1</numar>
+            <localitate>Braila</localitate>
+            <judet>Braila</judet>
+            <tara>Romania</tara>
+        </adresa>
+        <nr_telefon>072222</nr_telefon>
+        <email>vasilica.rares@yahoo.com</email>
+        <liceu>Kogalniceanu</liceu>
+    </persoana>
+    <persoana id="3">
+        <Nume>Mocanu</Nume>
+        <prenume>Cristian</prenume>
+        <varsta>25</varsta>
+        <adresa>
+            <strada>Dunarea</strada>
+            <numar>12</numar>
+            <localitate>Timisoreana</localitate>
+            <judet>Timisoara</judet>
+            <tara>Romania</tara>
+        </adresa>
+        <nr_telefon>073333</nr_telefon>
+        <email>mocanu.cristian@yahoo.com</email>
+        <liceu>Eminescu</liceu>
+    </persoana>
+</persoane>

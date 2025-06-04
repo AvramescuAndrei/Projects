@@ -1,0 +1,64 @@
+           <section id="sec1">
+                <h2 style="color:#FED21C;">Sectiunea 1</h2>
+                <p style="color:#FED21C;">
+                    Data de astazi este: <span id="current_date">N/A</span>
+                </p>
+                <p style="color:#FED21C;">
+                    URL-ul curent este: <span id="current_url">N/A</span>
+                </p>
+                <p style="color:#FED21C;">
+                    Locatia curenta este: <span id="current_geo">N/A</span>
+                </p>
+                <p style="color:#FED21C;">
+                    Numele si versiunea browser-ului este: <span id="current_browser">N/A</span>
+                </p>
+                <p style="color:#FED21C;">
+                    Sistemul dvs de operare este: <span id="current_os">N/A</span>
+                </p>
+            </section>
+            <section id="sec2">
+                <h2 style="color:#FED21C;">Sectiunea 2 - Canvas</h2>
+                <canvas id="desen" width="500" onclick="draw(event);"></canvas>
+                <div id="canvas_toolbar">
+                    <label for="culoare1" style="color:#FED21C;">Culoare :</label>
+                    <input type="color" id="culoare1" name="Culoare" value="#000000" onchange="input_color_callback(event);">
+                </div>
+            </section>
+            <section id="sec3">
+                <h2 style="color:#FED21C;">Sectiunea 3 - Tabel</h2>
+                <p style="color:#FED21C;"><i>Ce arome ați dori să adăugam ?(Alegeți o linie și o coloana în functie de
+                    prioritatea pe care o doriți) :</i></p>
+                <div id="edit_table_container">
+                    <table id="editable_table" style="color:#FED21C;">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td>Linia 1. -</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Linia 2. -</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Linia 3. -</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="table_insert" style="color:#FED21C;">
+                        <div class="insert-line">
+                            <label for="what_row">Randul la care doriti sa inserati:</label>
+                            <input type="text" id="what_row" name="Rand" value="0">
+                            <label for="what_row_text">Textul:</label>
+                            <input type="text" id="what_row_text" name="Text" value="">
+                            <label for="what_row_bg">Culoare fundal:</label>
+                            <input type="color" id="what_row_bg" name="Culoare" value="">
+                            <button id="insert_row" class="insert-button" onclick="add_table_row(event);">Adauga Rand</button>
+                            <button id="insert_col" class="insert-button" onclick="add_table_col(event);">Adauga Coloana</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        <script src="js/script.js"></script>

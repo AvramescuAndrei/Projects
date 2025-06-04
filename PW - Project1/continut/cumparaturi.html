@@ -1,0 +1,37 @@
+<div id="buy-form">
+    <script src="js/cumparaturi.js"></script>
+    <h2>Cumparaturi</h2>
+    <select id="choice" onchange="Cumparaturi.initStorage(this.value)">
+        <option value="localStorage">LocalStorage</option>
+        <option value="indexedDB">IndexedDB</option>
+    </select>
+    <div class="form">
+        <span class="input-family">
+            <input type="text" id="name" name="name">
+            <label for="name">Nume</label>
+        </span>
+        <span class="input-family">
+            <input type="text" id="cantitate" name="cantitate">
+            <label for="cantitate">Cantitate</label>
+        </span>
+        <button class="add" onclick="Cumparaturi.submit();">Adauga</button>
+    </div>
+    <div class="data">
+        <div class="loading hid">Datele se incarca...</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nr</th>
+                    <th>Nume produs</th>
+                    <th>Cantitate</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="data">
+        <button class="reset" onclick="Cumparaturi.reset();">Resetează</button>
+    </div>
+</div>

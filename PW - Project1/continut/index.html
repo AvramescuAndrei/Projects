@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ro">
+    <head>
+        <title>GoGoGoșerie</title>
+        <link rel="stylesheet" href ="css/stil.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script>
+            var schimbaContinut = function(page){
+            return fetch(page + ".html").then(function(r){
+                return r.text();
+            }).then(function(r){
+                var cont = document.getElementById("continut");
+                cont.innerHTML = r;
+                var scr = cont.querySelectorAll("script");
+                for (var i = 0, j = scr.length; i < j; i++) {
+                    var src = scr[i].getAttribute("src");
+                    var src_inline = scr[i].innerHTML;
+                    scr[i].remove();
+                    var new_scr = document.createElement("script");
+                    new_scr.setAttribute("src", src);
+                    new_scr.innerHTML = src_inline;
+                    cont.appendChild(new_scr);
+                }
+            }).catch(function(e){
+                console.error("Eroare", e);
+            });
+};
+        </script>
+    </head>
+    <body>
+        <header>
+            <img src="imagini/poza2.jpg" alt="GoGoGoșerie" width="125"/>
+            <h1>
+                <span class ="index_titlu_1">Go</span>
+                <span class ="index_titlu_2">Go</span>
+                <span class ="index_titlu_3">Goșerie</span>
+            </h1>
+            <nav>
+                <ul>
+                    <li>
+                        <a onclick="schimbaContinut('acasa')">Acasă</a>
+                    </li>
+                    <li>
+                        <a onclick="schimbaContinut('despre')">Despre</a>
+                    </li>
+                    <li>
+                        <a onclick="schimbaContinut('inregistreaza')">Inregistrează</a>
+                    </li>
+                    <li>
+                        <a onclick="schimbaContinut('video')">Video</a>
+                    <li>
+                        <a onclick="schimbaContinut('invat')">Invăț</a>
+                    </li>
+                    <li>
+                        <a onclick="schimbaContinut('desen')">Desen</a>
+                    </li>
+                    <li>
+                        <a onclick="schimbaContinut('persoane');">Persoane</a>
+                    </li>
+                    <li>
+                        <a onclick="schimbaContinut('cumparaturi');">Cumpărături</a>
+                    </li>
+                    <li>
+                        <a onclick="schimbaContinut('verifica');">Verifică</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+    <main id="continut">
+    </main>
+    
+    </body>
+    <footer>
+        <hr>
+        <p>&copy; GoGoGoșerie - Avramescu Andrei, 2025 - 2026.</p>
+    </footer>
+</body>
+</html>
